@@ -1,8 +1,9 @@
 import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        VStack {
+@main
+struct Question_Of_The_Day: App {
+    var body: some Scene {
+        WindowGroup {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
