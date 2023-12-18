@@ -6,6 +6,5 @@ struct Question: Decodable, View {
     
     var body: some View {
         Text(self.question)
-        Text(self.answer)
     }
 }
