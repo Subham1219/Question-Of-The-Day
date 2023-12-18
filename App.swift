@@ -4,10 +4,8 @@ import SwiftUI
 struct Question_Of_The_Day: App {
     var body: some Scene {
         WindowGroup {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            Text("Question of the Day!")
+            Spacer()
         }
     }
 }
