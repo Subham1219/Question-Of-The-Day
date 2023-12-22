@@ -1,32 +1,17 @@
 import SwiftUI
 
 struct Login: View {
-    @State private var name: String = ""
-    @State private var isNameSaved: Bool = false
-
+    @State var player: Player = Player()
+    
+    @State var name: String = ""
     var body: some View {
-        NavigationView {
-            VStack {
-                Text("Welcome to the Question of the Day!")
-                    .font(.title)
-                    .padding()
-
-                TextField("Your Name", text: $name)
-                    .padding()
-            }
-            .onAppear {
-                if let savedName = UserDefaults.standard.string(forKey: "name") {
-                    name = savedName
-                    isNameSaved = true
-                }
-            }
+        VStack {
+            Text("Welcome to the Question of the Day!")
+            TextField("Your Name", text: self.$name)
+                .onChange(of: self.name, perform: { (name: String) in
+                    self.player.name = name
+                })
         }
-    }
-
-    func saveName() {
-        if !self.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            UserDefaults.standard.set(self.name, forKey: "name")
-            self.isNameSaved = true
-        }
+        .padding()
     }
 }

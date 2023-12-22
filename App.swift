@@ -4,12 +4,20 @@ import FirebaseCore
 enum Mode {
     case login(Login)
     case question(Int)
-    case answer
+    case answer(Bool)
 }
+
+let MAX_ATTEMPTS = 3
 
 @main
 struct Question_Of_The_Day: App {
-    @State var mode: Mode = .login(Login())
+    @State var mode: Mode = { () -> Mode in
+        let login = Login()
+        if login.player.name != "Guest" {
+            return .question(1)
+        }
+        return .login(login)
+    }()
     @ObservedObject var database: Database = Database()
     
     var body: some Scene {
@@ -18,33 +26,66 @@ struct Question_Of_The_Day: App {
             case .login(let login):
                 login
                 Button(action: { () -> Void in
-                    login.saveName()
+                    if login.player.save() {
+                        self.database.login(id: login.player.id)
+                    } else {
+                        self.database.player = login.player
+                    }
                     self.mode = .question(1)
                 }) {
                     Text("Login")
                         .padding()
                 }
                 .padding()
-            case .question:
+            case .question(var attempt):
                 Text("Question of the Day!")
                 Spacer()
                 if let question = self.database.question {
                     question
+                    ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
+                        Button(action: { () -> Void in
+                            if n == question.answer {
+                                self.database.addScore()
+                                self.mode = .answer(true)
+                                return
+                            }
+                            attempt += 1
+                            if attempt > MAX_ATTEMPTS {
+                                self.mode = .answer(false)
+                            }
+                        }) {
+                            Text(choice)
+                        }
+                    }
                 }
-                Button(action: { () -> Void in
-                    self.mode = .answer
+                Spacer()
+                Button(action: {
+                    var login = Login()
+                    login.player.logout()
+                    self.mode = .login(login)
                 }) {
-                    Text("Show Answer")
+                    Text("Logout")
                 }
-                Spacer()
-            case .answer:
+            case .answer(let correct):
                 Text("Question of the Day!")
                 Spacer()
                 if let question = self.database.question {
                     question
-                    Text(question.answer)
+                    Text("Correct answer is: \(question.choices[question.answer])")
+                    if correct {
+                        Text("Good job!")
+                    } else {
+                        Text("Maybe next time!")
+                    }
                 }
                 Spacer()
+                Button(action: {
+                    var login = Login()
+                    login.player.logout()
+                    self.mode = .login(login)
+                }) {
+                    Text("Logout")
+                }
             }
         }
     }
