@@ -22,14 +22,6 @@ class Database: ObservableObject {
         }
     }
     
-    func addScore() {
-        guard let player = self.player else {
-            return
-        }
-        player.score += 1
-        self.savePlayer()
-    }
-    
     func savePlayer() {
         guard let player = self.player else {
             return

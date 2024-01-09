@@ -18,7 +18,7 @@ struct Leaderboard: Codable, View {
     
     func leaderboard() -> [Player] {
         return self.players.sorted(by: { (l, r) -> Bool in
-            l.score > r.score
+            return true // fix
         })
     }
     

@@ -35,6 +35,7 @@ struct Question_Of_The_Day: App {
         WindowGroup {
             switch self.mode {
             case .login(let login):
+                Spacer()
                 login
                 Button(action: { () -> Void in
                     login.player.save()
@@ -44,9 +45,8 @@ struct Question_Of_The_Day: App {
                     self.mode = .question(1)
                 }) {
                     Text("Login")
-                        .padding()
                 }
-                .padding()
+                Spacer()
             case .question(var attempt):
                 Text("Question of the Day!")
                 Spacer()
@@ -55,12 +55,19 @@ struct Question_Of_The_Day: App {
                     ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
                         Button(action: { () -> Void in
                             if n == question.answer {
-                                self.database.addScore()
+                                if let player = self.database.player {
+                                    player.answer(correct: true)
+                                    self.database.savePlayer()
+                                }
                                 self.mode = .answer(true)
                                 return
                             }
                             attempt += 1
                             if attempt > MAX_ATTEMPTS {
+                                if let player = self.database.player {
+                                    player.answer(correct: false)
+                                    self.database.savePlayer()
+                                }
                                 self.mode = .answer(false)
                             }
                         }) {
@@ -70,7 +77,7 @@ struct Question_Of_The_Day: App {
                 }
                 Spacer()
                 Button(action: {
-                    var login = Login()
+                    let login = Login()
                     login.player.logout()
                     self.mode = .login(login)
                 }) {
