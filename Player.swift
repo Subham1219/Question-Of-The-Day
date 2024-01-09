@@ -1,35 +1,34 @@
 import SwiftUI
 
-struct Player: Codable {
-    let id: UUID
-    var name: String
-    var score: Int = 0
+class Player: Codable, ObservableObject {
+    @Published var name: String = UserDefaults.standard.string(forKey: "playerName") ?? "Guest"
+    @Published var score: Int
     
-    init(name: String = "Guest") {
-        if let savedID = UserDefaults.standard.string(forKey: "playerID") {
-            self.id = UUID(uuidString: savedID) ?? UUID()
-            self.name = "Unknown"
-            self.score = UserDefaults.standard.integer(forKey: "playerScore")
-            print("existing: \(self)")
-            return
-        }
-        self.id = UUID()
-        self.name = name
-        self.score = UserDefaults.standard.integer(forKey: "playerScore")
-        print("new: \(self)")
+    enum JSON: String, CodingKey {
+        case score
     }
     
-    func save() -> Bool {
-        if self.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            return false
-        }
-        UserDefaults.standard.set(self.id.uuidString, forKey: "playerID")
+    init() {
+        self.score = UserDefaults.standard.integer(forKey: "playerScore")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: JSON.self)
+        self.score = try values.decode(Int.self, forKey: .score)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: JSON.self)
+        try container.encode(self.score, forKey: .score)
+    }
+    
+    func save() {
+        UserDefaults.standard.set(self.name, forKey: "playerName")
         UserDefaults.standard.set(self.score, forKey: "playerScore")
-        return true
     }
     
     func logout() {
-        UserDefaults.standard.removeObject(forKey: "playerID")
+        UserDefaults.standard.removeObject(forKey: "playerName")
         UserDefaults.standard.removeObject(forKey: "playerScore")
     }
 }

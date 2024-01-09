@@ -11,14 +11,25 @@ let MAX_ATTEMPTS = 3
 
 @main
 struct Question_Of_The_Day: App {
-    @State var mode: Mode = { () -> Mode in
+    @ObservedObject var database: Database
+    @State var mode: Mode
+    
+    init() {
+        let database = Database()
         let login = Login()
-        if login.player.name != "Guest" {
-            return .question(1)
+        if login.player.name == "Guest" {
+            self.database = database
+            self.mode = .login(login)
+            return
         }
-        return .login(login)
-    }()
-    @ObservedObject var database: Database = Database()
+        login.player.save()
+        database.login(name: login.player.name)
+        database.savePlayer()
+        database.getQuestion()
+        self.database = database
+        self.mode = .question(1)
+    }
+    
     
     var body: some Scene {
         WindowGroup {
@@ -26,11 +37,10 @@ struct Question_Of_The_Day: App {
             case .login(let login):
                 login
                 Button(action: { () -> Void in
-                    if login.player.save() {
-                        self.database.login(id: login.player.id)
-                    } else {
-                        self.database.player = login.player
-                    }
+                    login.player.save()
+                    self.database.login(name: login.player.name)
+                    self.database.savePlayer()
+                    self.database.getQuestion()
                     self.mode = .question(1)
                 }) {
                     Text("Login")
@@ -80,7 +90,7 @@ struct Question_Of_The_Day: App {
                 }
                 Spacer()
                 Button(action: {
-                    var login = Login()
+                    let login = Login()
                     login.player.logout()
                     self.mode = .login(login)
                 }) {

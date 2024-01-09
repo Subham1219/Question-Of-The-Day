@@ -22,9 +22,9 @@ struct Leaderboard: Codable, View {
         })
     }
     
-    func find(id: UUID) -> Player? {
+    func find(name: String) -> Player? {
         for player in self.players {
-            if player.id == id {
+            if player.name == name {
                 return .some(player)
             }
         }

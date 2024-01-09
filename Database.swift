@@ -11,13 +11,8 @@ class Database: ObservableObject {
     @Published var player: Player? = .none
     @Published var question: Question? = .none
     
-    init(player: Player? = .none) {
-        self.player = player
-        self.getQuestion()
-    }
-    
-    func login(id: UUID) {
-        self.firestore.collection("players").document(id.uuidString).getDocument(as: Player.self) { result in
+    func login(name: String) {
+        self.firestore.collection("players").document(name).getDocument(as: Player.self) { result in
             switch result {
             case .success(let player):
                 self.player = .some(player)
@@ -27,16 +22,20 @@ class Database: ObservableObject {
         }
     }
     
+    func addScore() {
+        guard let player = self.player else {
+            return
+        }
+        player.score += 1
+        self.savePlayer()
+    }
+    
     func savePlayer() {
         guard let player = self.player else {
             return
         }
-        if player.name == "Guest" {
-            return
-        }
-        let id = player.id ?? UUID()
         do {
-            try self.firestore.collection("players").document(id.uuidString).setData(from: self.player)
+            try self.firestore.collection("players").document(player.name).setData(from: player)
         } catch let error {
             print(error)
         }
@@ -58,10 +57,5 @@ class Database: ObservableObject {
                 print(error)
             }
         }
-    }
-    
-    func addScore() {
-        self.player.score += 1
-        self.savePlayer()
     }
 }
