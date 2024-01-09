@@ -11,10 +11,20 @@ struct AnswerCollection: Codable {
     mutating func add(answer: Answer) {
         self.answers.append(answer)
     }
+
+    func done() -> Bool {
+        let today = Date()
+        for answer in self.answers {
+            if answer.date == today {
+                return true
+            }
+        }
+        return false
+    }
     
     func score() -> Double {
         var score = 0
-        for answer in answers {
+        for answer in self.answers {
             if answer.correct {
                score += 1
             }
