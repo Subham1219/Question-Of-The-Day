@@ -95,7 +95,12 @@ struct Question_Of_The_Day: App {
                     Text("Logout")
                 }
             case .answer(let correct):
-                Text("Question of the Day!")
+                HStack {
+                    Text("Question of the Day!")
+                    if let player = self.database.player {
+                        Text("Score: \(String(player.answers.score()))")
+                    }
+                }
                 Spacer()
                 if let question = self.database.question {
                     question
