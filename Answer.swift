@@ -12,14 +12,14 @@ struct AnswerCollection: Codable {
         self.answers.append(answer)
     }
 
-    func done() -> Bool {
+    func done() -> Answer? {
         let today = Date()
         for answer in self.answers {
             if answer.date == today {
-                return true
+                return .some(answer)
             }
         }
-        return false
+        return .none
     }
     
     func score() -> Double {
