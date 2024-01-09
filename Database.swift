@@ -34,13 +34,18 @@ class Database: ObservableObject {
     }
     
     func getQuestion() {
-//        let formatter = { () -> DateFormatter in
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "yyyy.MM.dd"
-//            return formatter
-//        }()
-//        let date = formatter.string(from: Date())
-        let date = "2023.12.18" // for testing
+        guard let player = self.player else {
+            return
+        }
+        if player.done() {
+            return
+        }
+        let formatter = { () -> DateFormatter in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy.MM.dd"
+            return formatter
+        }()
+        let date = formatter.string(from: Date())
         self.firestore.collection("questions").document(date).getDocument(as: Question.self) { result in
             switch result {
             case .success(let question):
