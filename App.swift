@@ -26,8 +26,12 @@ struct Question_Of_The_Day: App {
         database.login(name: login.player.name)
         database.savePlayer()
         database.getQuestion()
+        if let answer = database.player.done() {
+            self.mode = .answer(answer.correct)
+        } else {
+            self.mode = .question(1)
+        }
         self.database = database
-        self.mode = .question(1)
     }
     
     
@@ -38,11 +42,18 @@ struct Question_Of_The_Day: App {
                 Spacer()
                 login
                 Button(action: { () -> Void in
+                    if login.player.name == "Guest" {
+                        return
+                    }
                     login.player.save()
                     self.database.login(name: login.player.name)
                     self.database.savePlayer()
                     self.database.getQuestion()
-                    self.mode = .question(1)
+                    if let answer = self.database.player.done() {
+                        self.mode = .answer(answer.correct)
+                    } else {
+                        self.mode = .question(1)
+                    }
                 }) {
                     Text("Login")
                 }
