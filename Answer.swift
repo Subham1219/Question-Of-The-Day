@@ -1,34 +1,37 @@
 import SwiftUI
 
-struct Answer: Codable {
-    let date: Date
-    let correct: Bool
+enum Completion: Codable {
+    case attempting(Int)
+    case done(Bool)
 }
 
-struct AnswerCollection: Codable {
-    var answers: [Answer] = []
+class Answer: Codable {
+    let day: String
+    var completion: Completion
     
-    mutating func add(answer: Answer) {
-        self.answers.append(answer)
-    }
-
-    func done() -> Answer? {
-        let today = Date()
-        for answer in self.answers {
-            if answer.date == today {
-                return .some(answer)
-            }
-        }
-        return .none
+    enum JSON: String, CodingKey {
+        case day
+        case completion
     }
     
-    func score() -> Double {
-        var score = 0
-        for answer in self.answers {
-            if answer.correct {
-               score += 1
-            }
-        }
-        return Double(score / answers.count)
+    init(date: Date, completion: Completion = .attempting(0)) {
+        self.day = DayFormatter.string(from: date)
+        self.completion = completion
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: JSON.self)
+        self.day = try values.decode(String.self, forKey: .day)
+        self.completion = try values.decode(Completion.self, forKey: .completion)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: JSON.self)
+        try container.encode(self.day, forKey: .day)
+        try container.encode(self.completion, forKey: .completion)
+    }
+    
+    func correct() -> Bool? {
+        return .some(true)
     }
 }

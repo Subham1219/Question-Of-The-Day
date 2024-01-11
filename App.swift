@@ -7,33 +7,38 @@ enum Mode {
     case answer(Bool)
 }
 
-let MAX_ATTEMPTS = 3
-
 @main
 struct Question_Of_The_Day: App {
-    @ObservedObject var database: Database
-    @State var mode: Mode
-    
-    init() {
-        let database = Database()
+    @ObservedObject var database: Database = Database()
+    @State var mode: Mode = { () -> Mode in
         let login = Login()
-        if login.player.name == "Guest" {
-            self.database = database
-            self.mode = .login(login)
-            return
+        if login.player.name != "" {
+            return .question(1)
         }
-        login.player.save()
-        database.login(name: login.player.name)
-        database.savePlayer()
-        database.getQuestion()
-        if let answer = database.player.done() {
-            self.mode = .answer(answer.correct)
-        } else {
-            self.mode = .question(1)
-        }
-        self.database = database
-    }
+        return .login(login)
+    }()
     
+    func login() {
+        switch self.mode {
+        case .login(let login):
+            login.player.save()
+            if login.player.name != "Guest" {
+                self.database.login(name: login.player.name)
+                self.database.savePlayer()
+            }
+        default:
+            break
+        }
+        self.database.getQuestion()
+        if let player = self.database.player {
+            if let answer = player.done() {
+                self.mode = .answer(answer.correct())
+            }
+            if self.database.question != nil {
+                self.mode = .question(1)
+            }
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -42,18 +47,7 @@ struct Question_Of_The_Day: App {
                 Spacer()
                 login
                 Button(action: { () -> Void in
-                    if login.player.name == "Guest" {
-                        return
-                    }
-                    login.player.save()
-                    self.database.login(name: login.player.name)
-                    self.database.savePlayer()
-                    self.database.getQuestion()
-                    if let answer = self.database.player.done() {
-                        self.mode = .answer(answer.correct)
-                    } else {
-                        self.mode = .question(1)
-                    }
+                    self.login()
                 }) {
                     Text("Login")
                 }
@@ -61,25 +55,29 @@ struct Question_Of_The_Day: App {
             case .question(var attempt):
                 Text("Question of the Day!")
                 Spacer()
-                if let question = self.database.question {
+                if var question = self.database.question {
                     question
                     ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
                         Button(action: { () -> Void in
-                            if n == question.answer {
+                            attempt += 1
+                            if let player = self.database.player {
+                                player.update(completion: .attempting(attempt))
+                            }
+                            if question.check(answer: n) {
                                 if let player = self.database.player {
-                                    player.answer(correct: true)
+                                    player.update(completion: .done(true))
                                     self.database.savePlayer()
                                 }
                                 self.mode = .answer(true)
                                 return
                             }
-                            attempt += 1
-                            if attempt > MAX_ATTEMPTS {
+                            if attempt >= question.max_attempts {
                                 if let player = self.database.player {
-                                    player.answer(correct: false)
+                                    player.update(completion: .done(false))
                                     self.database.savePlayer()
                                 }
                                 self.mode = .answer(false)
+                                return
                             }
                         }) {
                             Text(choice)
@@ -98,13 +96,13 @@ struct Question_Of_The_Day: App {
                 HStack {
                     Text("Question of the Day!")
                     if let player = self.database.player {
-                        Text("Score: \(String(player.answers.score()))")
+                        Text("Score: \(String(player.score()))")
                     }
                 }
                 Spacer()
                 if let question = self.database.question {
                     question
-                    Text("Correct answer is: \(question.choices[question.answer])")
+                    Text("Correct answer is: \(question.choices[question.correct])")
                     if correct {
                         Text("Good job!")
                     } else {
