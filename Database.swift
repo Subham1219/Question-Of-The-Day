@@ -16,8 +16,8 @@ class Database: ObservableObject {
             switch result {
             case .success(let player):
                 self.player = .some(player)
-            case .failure(let error):
-                print(error)
+            case .failure(_):
+                print("Player not found in the database")
             }
         }
     }
@@ -28,20 +28,20 @@ class Database: ObservableObject {
         }
         do {
             try self.firestore.collection("players").document(player.name).setData(from: player)
-        } catch let error {
-            print(error)
+        } catch {
+            print("Not able to save the player in the database")
         }
     }
     
     func getQuestion() {
 //        let date = DayFormatter.string(from: Date())
-        let date = "2023.12.18" // for testing
+        let date = "2024.1.18"
         self.firestore.collection("questions").document(date).getDocument(as: Question.self) { result in
             switch result {
             case .success(let question):
                 self.question = question
-            case .failure(let error):
-                print(error)
+            case .failure(_):
+                print("Question not found in the database")
             }
         }
     }

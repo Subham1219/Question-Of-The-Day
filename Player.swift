@@ -41,8 +41,9 @@ class Player: Codable, ObservableObject {
     
     func update(completion: Completion) {
         let today = Date()
-        if var answer = self.find(date: today) {
+        if let answer = self.find(date: today) {
             answer.completion = completion
+            print("updated completion")
         } else {
             self.answers.append(Answer(date: today, completion: completion))
         }

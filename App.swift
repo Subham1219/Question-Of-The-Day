@@ -10,13 +10,7 @@ enum Mode {
 @main
 struct Question_Of_The_Day: App {
     @ObservedObject var database: Database = Database()
-    @State var mode: Mode = { () -> Mode in
-        let login = Login()
-        if login.player.name != "" {
-            return .question(1)
-        }
-        return .login(login)
-    }()
+    @State var mode: Mode = .login(Login())
     
     func login() {
         switch self.mode {
@@ -32,7 +26,12 @@ struct Question_Of_The_Day: App {
         self.database.getQuestion()
         if let player = self.database.player {
             if let answer = player.done() {
-                self.mode = .answer(answer.correct())
+                switch answer.completion {
+                case .attempting(let attempt):
+                    self.mode = .question(attempt)
+                case .done(let correct):
+                    self.mode = .answer(correct)
+                }
             }
             if self.database.question != nil {
                 self.mode = .question(1)
@@ -59,7 +58,6 @@ struct Question_Of_The_Day: App {
                     question
                     ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
                         Button(action: { () -> Void in
-                            attempt += 1
                             if let player = self.database.player {
                                 player.update(completion: .attempting(attempt))
                             }
@@ -79,6 +77,7 @@ struct Question_Of_The_Day: App {
                                 self.mode = .answer(false)
                                 return
                             }
+                            attempt += 1
                         }) {
                             Text(choice)
                         }

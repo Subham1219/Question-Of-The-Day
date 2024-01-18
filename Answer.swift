@@ -30,8 +30,4 @@ class Answer: Codable {
         try container.encode(self.day, forKey: .day)
         try container.encode(self.completion, forKey: .completion)
     }
-    
-    func correct() -> Bool? {
-        return .some(true)
-    }
 }
