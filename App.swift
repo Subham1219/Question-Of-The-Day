@@ -22,11 +22,11 @@ struct Question_Of_The_Day: App {
         self.mode = .login(Login(player: player))
     }
     
-    func login() {
+    func login() async {
         switch self.mode {
         case .login(let login):
-            self.player = self.database.getPlayer(player: login.player)
-            self.database.saveAnswers(player: self.player)
+            self.player.answers = await self.database.getAnswers(player: login.player)
+            print("num of answers: \(self.player.answers.count)")
         default:
             break
         }
@@ -37,9 +37,10 @@ struct Question_Of_The_Day: App {
             case .done(let correct):
                 self.mode = .answer(correct)
             }
-        }
-        if self.question != nil {
-            self.mode = .question(1)
+        } else {
+            if self.question != nil {
+                self.mode = .question(1)
+            }
         }
     }
     
@@ -50,7 +51,9 @@ struct Question_Of_The_Day: App {
                 Spacer()
                 login
                 Button(action: { () -> Void in
-                    self.login()
+                    Task {
+                        await self.login()
+                    }
                 }) {
                     Text("Login")
                 }
