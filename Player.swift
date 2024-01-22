@@ -5,6 +5,7 @@ class Player: Codable, ObservableObject {
     @Published var answers: [Answer]
     
     init() {
+        self.name = UserDefaults.standard.string(forKey: "name") ?? "Guest"
         self.answers = []
     }
     
@@ -20,6 +21,13 @@ class Player: Codable, ObservableObject {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: JSON.self)
         try container.encode(self.answers, forKey: .answers)
+    }
+    
+    func isGuest() -> Bool {
+        if self.name != "Guest" {
+            return false
+        }
+        return true
     }
     
     func find(date: Date) -> Answer? {
@@ -62,5 +70,16 @@ class Player: Codable, ObservableObject {
             }
         }
         return Double(score / answers.count)
+    }
+    
+    func save() {
+        if self.isGuest() {
+            return
+        }
+        UserDefaults.standard.setValue(self.name, forKey: "name")
+    }
+    
+    func logout() {
+        UserDefaults.standard.removeObject(forKey: "name")
     }
 }

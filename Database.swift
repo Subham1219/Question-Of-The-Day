@@ -8,16 +8,9 @@ struct Database {
         return Firestore.firestore()
     }()
     
-    func isGuest(name: String) -> Bool {
-        if name != "Guest" {
-            return false
-        }
-        return true
-    }
-    
     func getAnswers(player: Player) async -> [Answer] {
         var answers = player.answers
-        if !self.isGuest(name: player.name) {
+        if !player.isGuest() {
             do {
                 answers = try await self.firestore.collection("players").document(player.name).getDocument(as: Player.self).answers
             } catch {
@@ -28,7 +21,7 @@ struct Database {
     }
         
     func saveAnswers(player: Player) async {
-        if self.isGuest(name: player.name) {
+        if player.isGuest() {
             return
         }
         do {

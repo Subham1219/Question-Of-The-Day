@@ -24,8 +24,8 @@ struct Question_Of_The_Day: App {
     func login() async {
         switch self.mode {
         case .login(let login):
+            self.player.save()
             self.player.answers = await self.database.getAnswers(player: login.player)
-            print("num of answers: \(self.player.answers.count)")
         default:
             break
         }
@@ -43,6 +43,11 @@ struct Question_Of_The_Day: App {
         }
     }
     
+    func logout() {
+        self.player.logout()
+        self.mode = .login(Login(player: Player()))
+    }
+    
     var body: some Scene {
         WindowGroup {
             switch self.mode {
@@ -55,6 +60,13 @@ struct Question_Of_The_Day: App {
                     }
                 }) {
                     Text("Login")
+                }
+                .onAppear() {
+                    Task {
+                        if !self.player.isGuest() {
+                            await self.login()
+                        }
+                    }
                 }
                 Spacer()
             case .question(var attempt):
@@ -94,7 +106,7 @@ struct Question_Of_The_Day: App {
                 }
                 Spacer()
                 Button(action: {
-                    self.mode = .login(Login())
+                    self.logout()
                 }) {
                     Text("Logout")
                 }
@@ -120,7 +132,7 @@ struct Question_Of_The_Day: App {
                 }
                 Spacer()
                 Button(action: {
-                    self.mode = .login(Login())
+                    self.logout()
                 }) {
                     Text("Logout")
                 }
