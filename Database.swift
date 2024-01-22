@@ -2,47 +2,34 @@ import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseDatabase
 
-class Database: ObservableObject {
-    private let firestore: Firestore = { () -> Firestore in
-        FirebaseApp.configure()
-        return Firestore.firestore()
-    }()
-    @Published var player: Player? = .none
-    @Published var question: Question? = .none
-    
-    func login(name: String) {
-        self.firestore.collection("players").document(name).getDocument(as: Player.self) { result in
-            switch result {
-            case .success(let player):
-                self.player = .some(player)
-            case .failure(_):
-                print("Player not found in the database")
-            }
+struct Database {
+    func isGuest(name: String) -> Bool {
+        if name != "Guest" {
+            return false
         }
+        return true
     }
     
-    func savePlayer() {
-        guard let player = self.player else {
+    func getPlayer(player: Player) -> Player {
+        if self.isGuest(name: player.name) {
+            return player
+        }
+        // add database routine here
+        return player
+    }
+    
+    func saveAnswers(player: Player) {
+        if self.isGuest(name: player.name) {
             return
         }
-        do {
-            try self.firestore.collection("players").document(player.name).setData(from: player)
-        } catch {
-            print("Not able to save the player in the database")
-        }
+        // add database routine here
     }
     
-    func getQuestion() {
+    func getQuestion() -> Question {
 //        let date = DayFormatter.string(from: Date())
-        let date = "2024.1.18"
-        self.firestore.collection("questions").document(date).getDocument(as: Question.self) { result in
-            switch result {
-            case .success(let question):
-                self.question = question
-            case .failure(_):
-                print("Question not found in the database")
-            }
-        }
+        let date = "2024.1.18" // for testing
+        return Question(question: "How many degrees are there in a right angle?", choices: ["45", "90", "180"], max_attempts: 1, correct: 1)
     }
 }
