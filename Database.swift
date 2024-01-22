@@ -27,22 +27,26 @@ struct Database {
         return answers
     }
         
-    func saveAnswers(player: Player) {
+    func saveAnswers(player: Player) async {
         if self.isGuest(name: player.name) {
             return
         }
-        Task {
-            do {
-                try self.firestore.collection("players").document(player.name).setData(from: player)
-            } catch let error {
-                print("Error saving answers: \(error)")
-            }
+        do {
+            try self.firestore.collection("players").document(player.name).setData(from: player)
+        } catch let error {
+            print("Error saving answers: \(error)")
         }
     }
     
-    func getQuestion() -> Question {
+    func getQuestion() async -> Question? {
         //        let date = DayFormatter.string(from: Date())
-        let date = "2024.1.18" // for testing
-        return Question(question: "How many degrees are there in a right angle?", choices: ["45", "90", "180"], max_attempts: 1, correct: 1)
+        let date = "2024.1.22" // for testing
+        do {
+            let question = try await self.firestore.collection("questions").document(date).getDocument(as: Question.self)
+            return .some(question)
+        } catch {
+            print("Error decoding city: \(error)")
+        }
+        return .none
     }
 }

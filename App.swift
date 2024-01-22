@@ -11,14 +11,13 @@ enum Mode {
 struct Question_Of_The_Day: App {
     var database: Database
     @State var player: Player
-    @State var question: Question? = .none
+    @State var question: Question?
     @State var mode: Mode
     
     init() {
         self.database = Database()
         let player = Player()
         self.player = player
-        self.question = self.database.getQuestion()
         self.mode = .login(Login(player: player))
     }
     
@@ -63,18 +62,27 @@ struct Question_Of_The_Day: App {
                 Spacer()
                 if var question = self.question {
                     question
+                        .onAppear() {
+                            Task {
+                                self.question = await self.database.getQuestion()
+                            }
+                        }
                     ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
                         Button(action: { () -> Void in
                             self.player.update(completion: .attempting(attempt))
                             if question.check(answer: n) {
                                 self.player.update(completion: .done(true))
-                                self.database.saveAnswers(player: self.player)
+                                Task {
+                                    await self.database.saveAnswers(player: self.player)
+                                }
                                 self.mode = .answer(true)
                                 return
                             }
                             if attempt >= question.max_attempts {
                                 self.player.update(completion: .done(false))
-                                self.database.saveAnswers(player: self.player)
+                                Task {
+                                    await self.database.saveAnswers(player: self.player)
+                                }
                                 self.mode = .answer(false)
                                 return
                             }
@@ -94,6 +102,11 @@ struct Question_Of_The_Day: App {
                 HStack {
                     Text("Question of the Day!")
                     Text("Score: \(String(self.player.score()))")
+                }
+                .onAppear() {
+                    Task {
+                        self.question = await self.database.getQuestion()
+                    }
                 }
                 Spacer()
                 if let question = self.question {
