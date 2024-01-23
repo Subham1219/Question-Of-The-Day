@@ -24,10 +24,10 @@ class Player: Codable, ObservableObject {
     }
     
     func isGuest() -> Bool {
-        if self.name != "Guest" {
-            return false
+        if self.name == "Guest" {
+            return true
         }
-        return true
+        return false
     }
     
     func find(date: Date) -> Answer? {
@@ -73,13 +73,12 @@ class Player: Codable, ObservableObject {
     }
     
     func save() {
-        if self.isGuest() {
-            return
-        }
         UserDefaults.standard.setValue(self.name, forKey: "name")
     }
     
     func logout() {
-        UserDefaults.standard.removeObject(forKey: "name")
+        self.name = "Guest"
+        UserDefaults.standard.setValue(self.name, forKey: "name")
+        self.answers = []
     }
 }

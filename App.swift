@@ -24,8 +24,9 @@ struct Question_Of_The_Day: App {
     func login() async {
         switch self.mode {
         case .login(let login):
+            self.player = login.player
+            self.player.answers = await self.database.getAnswers(player: self.player)
             self.player.save()
-            self.player.answers = await self.database.getAnswers(player: login.player)
         default:
             break
         }
@@ -37,15 +38,13 @@ struct Question_Of_The_Day: App {
                 self.mode = .answer(correct)
             }
         } else {
-            if self.question != nil {
-                self.mode = .question(1)
-            }
+            self.mode = .question(1)
         }
     }
     
     func logout() {
         self.player.logout()
-        self.mode = .login(Login(player: Player()))
+        self.mode = .login(Login(player: self.player))
     }
     
     var body: some Scene {
@@ -61,11 +60,10 @@ struct Question_Of_The_Day: App {
                 }) {
                     Text("Login")
                 }
-                .onAppear() {
-                    Task {
-                        if !self.player.isGuest() {
-                            await self.login()
-                        }
+                .task {
+                    self.question = await self.database.getQuestion()
+                    if !login.player.isGuest() {
+                        await self.login()
                     }
                 }
                 Spacer()
@@ -74,11 +72,6 @@ struct Question_Of_The_Day: App {
                 Spacer()
                 if var question = self.question {
                     question
-                        .onAppear() {
-                            Task {
-                                self.question = await self.database.getQuestion()
-                            }
-                        }
                     ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
                         Button(action: { () -> Void in
                             self.player.update(completion: .attempting(attempt))
@@ -103,6 +96,8 @@ struct Question_Of_The_Day: App {
                             Text(choice)
                         }
                     }
+                } else {
+                    Text("No Question Today")
                 }
                 Spacer()
                 Button(action: {
@@ -114,11 +109,6 @@ struct Question_Of_The_Day: App {
                 HStack {
                     Text("Question of the Day!")
                     Text("Score: \(String(self.player.score()))")
-                }
-                .onAppear() {
-                    Task {
-                        self.question = await self.database.getQuestion()
-                    }
                 }
                 Spacer()
                 if let question = self.question {
