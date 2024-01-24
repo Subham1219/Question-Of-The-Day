@@ -54,7 +54,7 @@ class Player: Codable, ObservableObject {
         }
     }
     
-    func score() -> Double {
+    func score() -> Int {
         if answers.count == 0 {
             return 0
         }
@@ -69,7 +69,7 @@ class Player: Codable, ObservableObject {
                 }
             }
         }
-        return Double(score / answers.count)
+        return score
     }
     
     func save() {

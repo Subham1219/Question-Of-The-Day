@@ -1,5 +1,4 @@
 import SwiftUI
-import FirebaseCore
 
 enum Mode {
     case login(Login)
