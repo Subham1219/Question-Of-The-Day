@@ -101,7 +101,16 @@
 		ACB3230B2B693307005703E9 = {
 			isa = PBXGroup;
 			children = (
-				ACB323162B693307005703E9 /* Question-Of-The-Day */,
+				AC01DB2D2B69377600B41AA9 /* GoogleService-Info.plist */,
+				AC01DAEA2B6935C900B41AA9 /* App.swift */,
+				AC01DAF12B6935D200B41AA9 /* Answer.swift */,
+				AC01DAE92B6935C900B41AA9 /* Database.swift */,
+				AC01DAE82B6935C900B41AA9 /* Date.swift */,
+				AC01DAEB2B6935C900B41AA9 /* Login.swift */,
+				AC01DAF02B6935D200B41AA9 /* Player.swift */,
+				AC01DAF42B6935D800B41AA9 /* Question.swift */,
+				ACB3231B2B693308005703E9 /* Assets.xcassets */,
+				ACB3231D2B693308005703E9 /* Preview Content */,
 				ACB323152B693307005703E9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,23 +121,6 @@
 				ACB323142B693307005703E9 /* Question-Of-The-Day.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		ACB323162B693307005703E9 /* Question-Of-The-Day */ = {
-			isa = PBXGroup;
-			children = (
-				AC01DB2D2B69377600B41AA9 /* GoogleService-Info.plist */,
-				AC01DAEA2B6935C900B41AA9 /* App.swift */,
-				AC01DAF12B6935D200B41AA9 /* Answer.swift */,
-				AC01DAF42B6935D800B41AA9 /* Question.swift */,
-				AC01DAF02B6935D200B41AA9 /* Player.swift */,
-				AC01DAE92B6935C900B41AA9 /* Database.swift */,
-				AC01DAE82B6935C900B41AA9 /* Date.swift */,
-				AC01DAEB2B6935C900B41AA9 /* Login.swift */,
-				ACB3231B2B693308005703E9 /* Assets.xcassets */,
-				ACB3231D2B693308005703E9 /* Preview Content */,
-			);
-			path = "Question-Of-The-Day";
 			sourceTree = "<group>";
 		};
 		ACB3231D2B693308005703E9 /* Preview Content */ = {
@@ -383,7 +375,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Question-Of-The-Day/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -413,7 +405,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Question-Of-The-Day/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
