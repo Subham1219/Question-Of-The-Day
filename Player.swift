@@ -1,6 +1,7 @@
 import SwiftUI
 
-class Player: Codable, ObservableObject {
+class Player: Codable, ObservableObject, Identifiable {
+    let id = UUID()
     @Published var name: String = "Guest"
     @Published var answers: [Answer]
     
@@ -55,10 +56,10 @@ class Player: Codable, ObservableObject {
     }
     
     func score() -> Int {
-        if answers.count == 0 {
-            return 0
-        }
         var score = 0
+        if answers.count == 0 {
+            return score
+        }
         for answer in answers {
             switch answer.completion {
             case .attempting(_):

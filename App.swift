@@ -11,12 +11,14 @@ struct Question_Of_The_Day: App {
     var database: Database
     @State var player: Player
     @State var question: Question?
+    @State var leaderboard: Leaderboard
     @State var mode: Mode
     
     init() {
         self.database = Database()
         let player = Player()
         self.player = player
+        self.leaderboard = Leaderboard(current: player)
         self.mode = .login(Login(player: player))
     }
     
@@ -29,6 +31,8 @@ struct Question_Of_The_Day: App {
         default:
             break
         }
+        self.leaderboard.current = self.player
+        self.leaderboard.setPlayers(all: await self.database.getPlayers())
         if let answer = self.player.done() {
             switch answer.completion {
             case .attempting(let attempt):
@@ -78,6 +82,8 @@ struct Question_Of_The_Day: App {
                                 self.player.update(completion: .done(true))
                                 Task {
                                     await self.database.saveAnswers(player: self.player)
+                                    self.leaderboard.current = self.player
+                                    self.leaderboard.setPlayers(all: await self.database.getPlayers())
                                 }
                                 self.mode = .answer(true)
                                 return
@@ -86,6 +92,8 @@ struct Question_Of_The_Day: App {
                                 self.player.update(completion: .done(false))
                                 Task {
                                     await self.database.saveAnswers(player: self.player)
+                                    self.leaderboard.current = self.player
+                                    self.leaderboard.setPlayers(all: await self.database.getPlayers())
                                 }
                                 self.mode = .answer(false)
                                 return
@@ -119,6 +127,7 @@ struct Question_Of_The_Day: App {
                         Text("Maybe next time!")
                     }
                 }
+                self.leaderboard
                 Spacer()
                 Button(action: {
                     self.logout()

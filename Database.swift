@@ -42,4 +42,19 @@ struct Database {
         }
         return .none
     }
+    
+    func getPlayers() async -> [Player] {
+        var players: [Player] = []
+        do {
+            let documents = try await self.firestore.collection("players").getDocuments().documents
+            for document in documents {
+                let player = try document.data(as: Player.self)
+                player.name = document.documentID
+                players.append(player)
+            }
+        } catch {
+            print("Error getting leaderboard: \(error)")
+        }
+        return players
+    }
 }
