@@ -113,10 +113,7 @@ struct Question_Of_The_Day: App {
                     Text("Logout")
                 }
             case .answer(let correct):
-                HStack {
-                    Text("Question of the Day!")
-                    Text("Score: \(String(self.player.score()))")
-                }
+                Text("Question of the Day!")
                 Spacer()
                 if let question = self.question {
                     question
