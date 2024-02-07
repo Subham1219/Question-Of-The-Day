@@ -114,7 +114,7 @@ struct Question_Of_The_Day: App {
                 }
             case .answer(let correct):
                 Text("Question of the Day!")
-                Spacer()
+                    .padding()
                 if let question = self.question {
                     question
                     Text("Correct answer is: \(question.choices[question.correct])")
