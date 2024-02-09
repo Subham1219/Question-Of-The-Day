@@ -17,17 +17,15 @@ struct Login: View {
                     .foregroundColor(.blue)
                     .padding(.bottom, 20)
                 
-            }) {
+                TextField("Your Name", text: self.$name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding()
+                            
                 
                 Button(action: {
                     
                 }) {
-                    Text("Login")
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                   
                 }
                 .padding(.top, 20)
             }
