@@ -12,23 +12,38 @@ struct Leaderboard: View {
         self.players = all.sorted { $0.score() > $1.score() }
     }
     
-    func playerScore() -> String {
-        let points = self.current.score()
-        var score = "You have \(points) point"
-        if points != 1 {
-            score += "s"
+    func playerPosition(player: Player) -> String {
+        for (i, leaderboard_player) in self.players.enumerated() {
+            if leaderboard_player.name == player.name {
+                return String(i + 1)
+            }
         }
-        return score
+        return "Unknown"
+    }
+    
+    func playerScore(player: Player) -> String {
+        return String(player.score())
     }
     
     var body: some View {
         VStack {
-            Text("Leaderboard(\(self.playerScore()))")
-            ForEach(self.players) { player in
-                HStack {
-                    Text(player.name)
-                    Spacer()
-                    Text(String(player.score()))
+            Text("Leaderboard:")
+                .font(.headline)
+            HStack {
+                Text(self.playerPosition(player: self.current))
+                Text("You")
+                Spacer()
+                Text(self.playerScore(player: self.current))
+            }
+            Divider()
+            ScrollView {
+                ForEach(self.players) { player in
+                    HStack {
+                        Text(self.playerPosition(player: player))
+                        Text(player.name)
+                        Spacer()
+                        Text(self.playerScore(player: player))
+                    }
                 }
             }
         }
