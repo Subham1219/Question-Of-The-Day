@@ -72,6 +72,9 @@ struct Question_Of_The_Day: App {
                 Spacer()
             case .question(var attempt):
                 Text("Question of the Day!")
+                    .font(.title)
+                    .bold()
+                    .padding()
                 Spacer()
                 if var question = self.question {
                     question
@@ -114,6 +117,8 @@ struct Question_Of_The_Day: App {
                 }
             case .answer(let correct):
                 Text("Question of the Day!")
+                    .font(.title)
+                    .bold()
                     .padding()
                 if let question = self.question {
                     question
