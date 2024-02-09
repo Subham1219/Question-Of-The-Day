@@ -5,33 +5,39 @@ struct Login: View {
     
     @State var name: String = ""
     var body: some View {
-        VStack {
-            Text("Welcome to the Question of the Day!")
-                .font(.title)
-                .fontWeight(.bold)
-                .foregroundColor(.blue)
-                .padding(.bottom, 20)
+        ZStack {
             
-            TextField("Your Name", text: self.$name)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+            LinearGradient(colors: [.purple, .green], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
             
-            Button(action: {
+            VStack {
+                Text("Welcome to the Question of the Day!")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.blue)
+                    .padding(.bottom, 20)
                 
-            }) {
-                Text("Login")
-                    .foregroundColor(.white)
+                TextField("Your Name", text: self.$name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                
+                Button(action: {
+                    
+                }) {
+                    Text("Login")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                .padding(.top, 20)
             }
-            .padding(.top, 20)
+            .padding()
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(15)
+            .padding(.horizontal, 20)
         }
-        .padding()
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(15)
-        .padding(.horizontal, 20)
     }
+    
 }
-
