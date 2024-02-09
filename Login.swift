@@ -5,13 +5,35 @@ struct Login: View {
     
     @State var name: String = ""
     var body: some View {
-        VStack {
-            Text("Welcome to the Question of the Day!")
-            TextField("Your Name", text: self.$name)
-                .onChange(of: self.name) {
-                    self.player.name = self.name
+        ZStack {
+            
+            LinearGradient(colors: [.purple, .green], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+            
+            VStack {
+                Text("Welcome to the Question of the Day!")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.blue)
+                    .padding(.bottom, 20)
+                
+                TextField("Your Name", text: self.$name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding()
+                            
+                
+                Button(action: {
+                    
+                }) {
+                   
                 }
+                .padding(.top, 20)
+            }
+            .padding()
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(15)
+            .padding(.horizontal, 20)
         }
-        .padding()
     }
+    
 }
