@@ -54,22 +54,29 @@ struct Question_Of_The_Day: App {
         WindowGroup {
             switch self.mode {
             case .login(let login):
-                Spacer()
-                login
-                Button(action: { () -> Void in
-                    Task {
-                        await self.login()
+                ZStack {
+                    LinearGradient(colors: [.cyan, .green], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .ignoresSafeArea()
+                    VStack {
+                        Spacer()
+                        login
+                            .background(ignoresSafeAreaEdges: .all)
+                        Button(action: { () -> Void in
+                            Task {
+                                await self.login()
+                            }
+                        }) {
+                            Text("Login")
+                        }
+                        .task {
+                            self.question = await self.database.getQuestion()
+                            if !login.player.isGuest() {
+                                await self.login()
+                            }
+                        }
+                        Spacer()
                     }
-                }) {
-                    Text("Login")
                 }
-                .task {
-                    self.question = await self.database.getQuestion()
-                    if !login.player.isGuest() {
-                        await self.login()
-                    }
-                }
-                Spacer()
             case .question(var attempt):
                 Text("Question of the Day!")
                     .font(.title)
