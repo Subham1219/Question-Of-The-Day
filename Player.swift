@@ -31,10 +31,10 @@ class Player: Codable, ObservableObject, Identifiable {
         return false
     }
     
-    func find(date: Date) -> Answer? {
-        let day = DayFormatter.string(from: date)
+    func find(time: Date) -> Answer? {
+        let time = TimeFormatter.string(from: time)
         for answer in self.answers {
-            if answer.day == day {
+            if answer.time == time {
                 return .some(answer)
             }
         }
@@ -43,15 +43,15 @@ class Player: Codable, ObservableObject, Identifiable {
     
     func done() -> Answer? {
         let today = Date()
-        return self.find(date: today)
+        return self.find(time: today)
     }
     
     func update(completion: Completion) {
         let today = Date()
-        if let answer = self.find(date: today) {
+        if let answer = self.find(time: today) {
             answer.completion = completion
         } else {
-            self.answers.append(Answer(date: today, completion: completion))
+            self.answers.append(Answer(time: today, completion: completion))
         }
     }
     

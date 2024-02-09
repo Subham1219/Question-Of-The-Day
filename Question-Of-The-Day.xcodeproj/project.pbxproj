@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC01DAEC2B6935C900B41AA9 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01DAE82B6935C900B41AA9 /* Date.swift */; };
+		AC01DAEC2B6935C900B41AA9 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01DAE82B6935C900B41AA9 /* Time.swift */; };
 		AC01DAED2B6935C900B41AA9 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01DAE92B6935C900B41AA9 /* Database.swift */; };
 		AC01DAEE2B6935C900B41AA9 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01DAEA2B6935C900B41AA9 /* App.swift */; };
 		AC01DAEF2B6935C900B41AA9 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC01DAEB2B6935C900B41AA9 /* Login.swift */; };
@@ -48,7 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		AC01DAE82B6935C900B41AA9 /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		AC01DAE82B6935C900B41AA9 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		AC01DAE92B6935C900B41AA9 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		AC01DAEA2B6935C900B41AA9 /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		AC01DAEB2B6935C900B41AA9 /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 				AC01DAEA2B6935C900B41AA9 /* App.swift */,
 				AC01DAF12B6935D200B41AA9 /* Answer.swift */,
 				AC01DAE92B6935C900B41AA9 /* Database.swift */,
-				AC01DAE82B6935C900B41AA9 /* Date.swift */,
+				AC01DAE82B6935C900B41AA9 /* Time.swift */,
 				AC52CF202B6C0162003F220A /* Leaderboard.swift */,
 				AC01DAEB2B6935C900B41AA9 /* Login.swift */,
 				AC01DAF02B6935D200B41AA9 /* Player.swift */,
@@ -241,7 +241,7 @@
 				AC01DAEE2B6935C900B41AA9 /* App.swift in Sources */,
 				AC52CF212B6C0162003F220A /* Leaderboard.swift in Sources */,
 				AC01DAED2B6935C900B41AA9 /* Database.swift in Sources */,
-				AC01DAEC2B6935C900B41AA9 /* Date.swift in Sources */,
+				AC01DAEC2B6935C900B41AA9 /* Time.swift in Sources */,
 				AC01DAF32B6935D200B41AA9 /* Answer.swift in Sources */,
 				AC01DAF22B6935D200B41AA9 /* Player.swift in Sources */,
 				AC01DAF52B6935D800B41AA9 /* Question.swift in Sources */,

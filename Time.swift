@@ -1,7 +1,8 @@
 import SwiftUI
 
-let DayFormatter = { () -> DateFormatter in
+let TimeFormatter = { () -> DateFormatter in
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy.MM.dd"
     return formatter
 }()
+
