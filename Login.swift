@@ -7,27 +7,26 @@ struct Login: View {
     var body: some View {
         ZStack {
             
-            LinearGradient(colors: [.purple, .green], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [.cyan, .green], startPoint: .topLeading, endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             
             VStack {
                 Text("Welcome to the Question of the Day!")
-                    .font(.title)
+                    .font(.system(.title, design: .rounded))
+                                    .fontWeight(.heavy)
                     .fontWeight(.bold)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.white)
                     .padding(.bottom, 20)
                 
-            }) {
+                TextField("Your Name", text: self.$name)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding()
+                            
                 
                 Button(action: {
                     
                 }) {
-                    Text("Login")
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                   
                 }
                 .padding(.top, 20)
             }
