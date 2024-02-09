@@ -58,7 +58,6 @@ struct Question_Of_The_Day: App {
                     LinearGradient(colors: [.cyan, .green], startPoint: .topLeading, endPoint: .bottomTrailing)
                         .ignoresSafeArea()
                     VStack {
-                        Spacer()
                         login
                             .background(ignoresSafeAreaEdges: .all)
                         Button(action: { () -> Void in
@@ -80,7 +79,6 @@ struct Question_Of_The_Day: App {
                                 await self.login()
                             }
                         }
-                        Spacer()
                     }
                 }
             case .question(var attempt):
