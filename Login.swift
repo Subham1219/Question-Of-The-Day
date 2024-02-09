@@ -19,12 +19,7 @@ struct Login: View {
             Button(action: {
                 
             }) {
-                Text("Login")
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                
             }
             .padding(.top, 20)
         }
