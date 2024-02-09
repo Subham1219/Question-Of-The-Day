@@ -67,6 +67,12 @@ struct Question_Of_The_Day: App {
                             }
                         }) {
                             Text("Login")
+                                .font(.system(.title, design: .rounded))
+                                                .fontWeight(.heavy)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 20)
+                            
                         }
                         .task {
                             self.question = await self.database.getQuestion()
