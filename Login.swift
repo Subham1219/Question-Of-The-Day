@@ -15,20 +15,11 @@ struct Login: View {
                     .padding(.bottom, 20)
                 
                 TextField("Your Name", text: self.$name)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding()
-                            
-                
-                Button(action: {
-                    
-                }) {
-                   
-                }
-                .padding(.top, 20)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
             }
-            .padding()
-            .background(Color.gray.opacity(0.1))
             .cornerRadius(15)
+            .background(Color.gray.opacity(0.1))
             .padding(.horizontal, 20)
         }
     }
