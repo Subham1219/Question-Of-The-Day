@@ -9,7 +9,9 @@ struct Leaderboard: View {
     }
     
     mutating func setPlayers(all: [Player]) {
-        self.players = all.sorted { $0.score() > $1.score() }
+        self.players = all.sorted { (p1, p2) -> Bool in
+            return p1.score() > p2.score()
+        }
     }
     
     func playerPosition(player: Player) -> String {
