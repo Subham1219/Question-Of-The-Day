@@ -7,11 +7,31 @@ struct Login: View {
     var body: some View {
         VStack {
             Text("Welcome to the Question of the Day!")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.blue)
+                .padding(.bottom, 20)
+            
             TextField("Your Name", text: self.$name)
-                .onChange(of: self.name) {
-                    self.player.name = self.name
-                }
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            Button(action: {
+                
+            }) {
+                Text("Login")
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding(.top, 20)
         }
         .padding()
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(15)
+        .padding(.horizontal, 20)
     }
 }
+
