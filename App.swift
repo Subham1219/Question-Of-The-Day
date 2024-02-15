@@ -113,6 +113,15 @@ struct Question_Of_The_Day: App {
                             attempt += 1
                         }) {
                             Text(choice)
+                                .padding()
+                                                        .frame(maxWidth: .infinity)
+                                                        .background(
+                                                            RoundedRectangle(cornerRadius: 12)
+                                                                .foregroundColor(.blue) // Change this color as needed
+                                                                .padding(.horizontal, 10)
+                                                        )
+                                                        .foregroundColor(.white)
+                                                        .cornerRadius(12)
                         }
                     }
                 } else {
