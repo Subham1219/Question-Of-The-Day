@@ -12,6 +12,9 @@ struct Login: View {
                 .foregroundColor(.white)
                 .padding(.bottom, 30)
             TextField("Your Name", text: self.$name)
+                .onChange(of: self.name) {
+                    self.player.name = self.name
+                }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             Text("Write Your Name to Login!") 
