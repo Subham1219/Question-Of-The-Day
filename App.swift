@@ -59,7 +59,6 @@ struct Question_Of_The_Day: App {
                         .ignoresSafeArea()
                     VStack {
                         login
-                            .background(ignoresSafeAreaEdges: .all)
                         Button(action: { () -> Void in
                             Task {
                                 await self.login()
