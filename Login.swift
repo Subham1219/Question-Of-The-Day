@@ -16,14 +16,8 @@ struct Login: View {
                     self.player.name = self.name
                 }
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            Text("Write Your Name to Login!") 
-                .font(.subheadline)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
                 .padding(.bottom, 30)
         }
-        .cornerRadius(15)
-        .padding(.horizontal, 20)
+        .padding()
     }
 }
