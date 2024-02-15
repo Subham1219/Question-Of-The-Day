@@ -114,14 +114,11 @@ struct Question_Of_The_Day: App {
                         }) {
                             Text(choice)
                                 .padding()
-                                                        .frame(maxWidth: .infinity)
-                                                        .background(
-                                                            RoundedRectangle(cornerRadius: 12)
-                                                                .foregroundColor(.blue) // Change this color as needed
-                                                                .padding(.horizontal, 10)
-                                                        )
-                                                        .foregroundColor(.white)
-                                                        .cornerRadius(12)
+                                .frame(maxWidth: .infinity)
+                                .foregroundColor(.white)
+                                .background(.blue)
+                                .cornerRadius(12)
+                                .padding(.horizontal, 10)
                         }
                     }
                 } else {
