@@ -15,5 +15,6 @@ struct Question: Codable, View {
     
     var body: some View {
         Text(self.question)
+            .bold()
     }
 }
