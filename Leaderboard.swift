@@ -10,7 +10,24 @@ struct Leaderboard: View {
     
     mutating func setPlayers(all: [Player]) {
         self.players = all.sorted { (p1, p2) -> Bool in
-            return p1.score() > p2.score()
+            let p1_score = p1.score()
+            let p2_score = p2.score()
+            if p1_score != p2_score {
+                return p1_score > p2_score
+            }
+            guard let p1_answer = p1.answers.last else {
+                return true
+            }
+            guard let p2_answer = p2.answers.last else {
+                return false
+            }
+            guard let p1_date = TimeFormatter.date(from: p1_answer.time) else {
+                return true
+            }
+            guard let p2_date = TimeFormatter.date(from: p2_answer.time) else {
+                return false
+            }
+            return p1_date < p2_date
         }
     }
     
