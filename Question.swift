@@ -15,13 +15,6 @@ struct Question: Codable, View {
     
     var body: some View {
         Text(self.question)
-<<<<<<< Updated upstream
-        
-        
-        
-=======
             .bold()
-       
->>>>>>> Stashed changes
     }
 }
