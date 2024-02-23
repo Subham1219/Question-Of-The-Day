@@ -31,10 +31,14 @@ class Player: Codable, ObservableObject, Identifiable {
         return false
     }
     
-    func find(time: Date) -> Answer? {
-        let time = TimeFormatter.string(from: time)
+    func find(date: Date) -> Answer? {
+        let target = Calendar.current.dateComponents([.year, .month, .day], from: date)
         for answer in self.answers {
-            if answer.time == time {
+            guard let time = TimeFormatter.date(from: answer.time) else {
+                continue
+            }
+            let found = Calendar.current.dateComponents([.year, .month, .day], from: time)
+            if found.year == target.year && found.month == target.month && found.day == target.day {
                 return .some(answer)
             }
         }
@@ -43,12 +47,12 @@ class Player: Codable, ObservableObject, Identifiable {
     
     func done() -> Answer? {
         let today = Date()
-        return self.find(time: today)
+        return self.find(date: today)
     }
     
     func update(completion: Completion) {
         let today = Date()
-        if let answer = self.find(time: today) {
+        if let answer = self.find(date: today) {
             answer.completion = completion
         } else {
             self.answers.append(Answer(time: today, completion: completion))
