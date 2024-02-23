@@ -15,16 +15,10 @@ struct Leaderboard: View {
             if p1_score != p2_score {
                 return p1_score > p2_score
             }
-            guard let p1_answer = p1.answers.last else {
+            guard let p1_date = TimeFormatter.date(from: p1.answers.last!.time) else {
                 return true
             }
-            guard let p2_answer = p2.answers.last else {
-                return false
-            }
-            guard let p1_date = TimeFormatter.date(from: p1_answer.time) else {
-                return true
-            }
-            guard let p2_date = TimeFormatter.date(from: p2_answer.time) else {
+            guard let p2_date = TimeFormatter.date(from: p2.answers.last!.time) else {
                 return false
             }
             return p1_date < p2_date
