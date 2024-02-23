@@ -59,7 +59,6 @@ struct Question_Of_The_Day: App {
                         .ignoresSafeArea()
                     VStack {
                         login
-                            .background(ignoresSafeAreaEdges: .all)
                         Button(action: { () -> Void in
                             Task {
                                 await self.login()
@@ -67,11 +66,10 @@ struct Question_Of_The_Day: App {
                         }) {
                             Text("Login")
                                 .font(.system(.title, design: .rounded))
-                                                .fontWeight(.heavy)
+                                .fontWeight(.heavy)
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.bottom, 20)
-                            
                         }
                         .task {
                             self.question = await self.database.getQuestion()
@@ -115,6 +113,12 @@ struct Question_Of_The_Day: App {
                             attempt += 1
                         }) {
                             Text(choice)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .foregroundColor(.white)
+                                .background(.blue)
+                                .cornerRadius(12)
+                                .padding(.horizontal, 10)
                         }
                     }
                 } else {
