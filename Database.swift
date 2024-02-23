@@ -32,8 +32,7 @@ struct Database {
     }
     
     func getQuestion() async -> Question? {
-        //        let date = DayFormatter.string(from: Date())
-        let date = "2024.1.22" // for testing
+        let date = TimeFormatter.string(from: Date())
         do {
             let question = try await self.firestore.collection("questions").document(date).getDocument(as: Question.self)
             return .some(question)

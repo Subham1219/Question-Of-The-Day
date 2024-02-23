@@ -39,7 +39,6 @@ struct Leaderboard: View {
     }
     
     var body: some View {
-        
             VStack {
                 Text("Leaderboard:")
                     .font(.headline)
