@@ -79,79 +79,97 @@ struct Question_Of_The_Day: App {
                         }
                     }
                 }
+                
             case .question(var attempt):
-                Text("Question of the Day!")
-                    .font(.title)
-                    .bold()
-                    .padding()
-                Spacer()
-                if var question = self.question {
-                    question
-                    ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
-                        Button(action: { () -> Void in
-                            self.player.update(completion: .attempting(attempt))
-                            if question.check(answer: n) {
-                                self.player.update(completion: .done(true))
-                                Task {
-                                    await self.database.saveAnswers(player: self.player)
-                                    self.leaderboard.current = self.player
-                                    self.leaderboard.setPlayers(all: await self.database.getPlayers())
+                ZStack {
+                    LinearGradient(colors: [Color.cyan, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .ignoresSafeArea()
+                    VStack{
+                        Text("Question of the Day!")
+                            .font(.title)
+                            .bold()
+                            .padding()
+                        Spacer()
+                        if var question = self.question {
+                            question
+                            Image("question1")
+                            ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
+                                Button(action: { () -> Void in
+                                    self.player.update(completion: .attempting(attempt))
+                                    if question.check(answer: n) {
+                                        self.player.update(completion: .done(true))
+                                        Task {
+                                            await self.database.saveAnswers(player: self.player)
+                                            self.leaderboard.current = self.player
+                                            self.leaderboard.setPlayers(all: await self.database.getPlayers())
+                                        }
+                                        self.mode = .answer(true)
+                                        return
+                                    }
+                                    if attempt >= question.max_attempts {
+                                        self.player.update(completion: .done(false))
+                                        Task {
+                                            await self.database.saveAnswers(player: self.player)
+                                            self.leaderboard.current = self.player
+                                            self.leaderboard.setPlayers(all: await self.database.getPlayers())
+                                        }
+                                        self.mode = .answer(false)
+                                        return
+                                    }
+                                    attempt += 1
+                                    
+                                }) {
+                                    
+                                    Text(choice)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .foregroundColor(.black)
+                                        .background(.white)
+                                        .cornerRadius(12)
+                                        .padding(.horizontal, 10)
                                 }
-                                self.mode = .answer(true)
-                                return
                             }
-                            if attempt >= question.max_attempts {
-                                self.player.update(completion: .done(false))
-                                Task {
-                                    await self.database.saveAnswers(player: self.player)
-                                    self.leaderboard.current = self.player
-                                    self.leaderboard.setPlayers(all: await self.database.getPlayers())
-                                }
-                                self.mode = .answer(false)
-                                return
-                            }
-                            attempt += 1
+                            
+                        } else {
+                            Text("No Question Today")
+                        }
+                        Spacer()
+                        Button(action: {
+                            self.logout()
                         }) {
-                            Text(choice)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .foregroundColor(.white)
-                                .background(.blue)
-                                .cornerRadius(12)
-                                .padding(.horizontal, 10)
+                            Text("Logout")
                         }
                     }
-                } else {
-                    Text("No Question Today")
-                }
-                Spacer()
-                Button(action: {
-                    self.logout()
-                }) {
-                    Text("Logout")
                 }
             case .answer(let correct):
-                Text("Question of the Day!")
-                    .font(.title)
-                    .bold()
-                    .padding()
-                if let question = self.question {
-                    question
-                    Text("Correct answer is: \(question.choices[question.correct])")
-                    if correct {
-                        Text("Good job!")
-                    } else {
-                        Text("Maybe next time!")
+                ZStack {
+                    LinearGradient(colors: [.purple, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .ignoresSafeArea()
+                    VStack{
+                        Text("Question of the Day!")
+                            .font(.title)
+                            .bold()
+                            .padding()
+                        if let question = self.question {
+                            question
+                            Text("Correct answer is: \(question.choices[question.correct])")
+                            if correct {
+                                Text("Good job!")
+                            } else {
+                                Text("Maybe next time!")
+                            }
+                        }
+                        self.leaderboard
+                        Spacer()
+                        Button(action: {
+                            self.logout()
+                        }) {
+                            Text("Logout")
+                        }
                     }
-                }
-                self.leaderboard
-                Spacer()
-                Button(action: {
-                    self.logout()
-                }) {
-                    Text("Logout")
                 }
             }
         }
     }
 }
+

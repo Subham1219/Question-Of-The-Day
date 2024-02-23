@@ -39,27 +39,29 @@ struct Leaderboard: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Leaderboard:")
-                .font(.headline)
-            HStack {
-                Text(self.playerPosition(player: self.current))
-                Text("You")
-                Spacer()
-                Text(self.playerScore(player: self.current))
-            }
-            Divider()
-            ScrollView {
-                ForEach(self.players) { player in
-                    HStack {
-                        Text(self.playerPosition(player: player))
-                        Text(player.name)
-                        Spacer()
-                        Text(self.playerScore(player: player))
+        
+            VStack {
+                Text("Leaderboard:")
+                    .font(.headline)
+                HStack {
+                    Text(self.playerPosition(player: self.current))
+                    Text("You")
+                    Spacer()
+                    Text(self.playerScore(player: self.current))
+                }
+                Divider()
+                ScrollView {
+                    ForEach(self.players) { player in
+                        HStack {
+                            Text(self.playerPosition(player: player))
+                            Text(player.name)
+                            Spacer()
+                            Text(self.playerScore(player: player))
+                        }
                     }
                 }
             }
+            .padding()
         }
-        .padding()
     }
-}
+
