@@ -132,6 +132,7 @@ struct Question_Of_The_Day: App {
                             
                         } else {
                             Text("No Question Today")
+                            self.leaderboard
                         }
                         Spacer()
                         Button(action: {
