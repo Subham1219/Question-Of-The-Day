@@ -37,7 +37,7 @@ struct Database {
             let question = try await self.firestore.collection("questions").document(date).getDocument(as: Question.self)
             return .some(question)
         } catch {
-            print("Error decoding city: \(error)")
+            print("Error decoding answers: \(error)")
         }
         return .none
     }
