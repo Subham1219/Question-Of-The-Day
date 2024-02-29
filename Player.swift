@@ -10,6 +10,11 @@ class Player: Codable, ObservableObject, Identifiable {
         self.answers = []
     }
     
+    init(name: String) {
+        self.name = name
+        self.answers = []
+    }
+    
     enum JSON: String, CodingKey {
         case answers
     }

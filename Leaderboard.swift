@@ -15,6 +15,12 @@ struct Leaderboard: View {
             if p1_score != p2_score {
                 return p1_score > p2_score
             }
+            if p1.answers.count < 1 {
+                return true
+            }
+            if p2.answers.count < 1 {
+                return false
+            }
             guard let p1_date = TimeFormatter.date(from: p1.answers.last!.time) else {
                 return true
             }
