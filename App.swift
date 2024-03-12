@@ -145,6 +145,10 @@ struct Question_Of_The_Day: App {
                             self.logout()
                         }) {
                             Text("Logout")
+                                .bold()
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                                .padding()
                         }
                     }
                 }
@@ -176,6 +180,10 @@ struct Question_Of_The_Day: App {
                             self.logout()
                         }) {
                             Text("Logout")
+                                .bold()
+                                .fontWeight(.heavy)
+                                .foregroundColor(.white)
+                                .padding()
                         }
                     }
                 }
