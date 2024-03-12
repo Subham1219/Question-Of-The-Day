@@ -47,13 +47,17 @@ struct Leaderboard: View {
     var body: some View {
             VStack {
                 Text("Leaderboard:")
-                    .font(.headline)
+                    .bold()
+                    .foregroundColor(.white)
+                    .font(.title3)
                 HStack {
                     Text(self.playerPosition(player: self.current))
                     Text("You")
                     Spacer()
                     Text(self.playerScore(player: self.current))
                 }
+                .foregroundColor(.white)
+
                 Divider()
                 ScrollView {
                     ForEach(self.players) { player in
@@ -63,6 +67,7 @@ struct Leaderboard: View {
                             Spacer()
                             Text(self.playerScore(player: player))
                         }
+                        .foregroundColor(.white)
                     }
                 }
             }

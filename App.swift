@@ -66,8 +66,8 @@ struct Question_Of_The_Day: App {
                         }) {
                             Text("Login")
                                 .font(.system(.title, design: .rounded))
+                                .bold()
                                 .fontWeight(.heavy)
-                                .fontWeight(.bold)
                                 .foregroundColor(.white)
                                 .padding(.bottom, 20)
                         }
@@ -86,13 +86,15 @@ struct Question_Of_The_Day: App {
                         .ignoresSafeArea()
                     VStack{
                         Text("Question of the Day!")
-                            .font(.title)
+                            .font(.largeTitle)
                             .bold()
+                            .foregroundColor(.white)
                             .padding()
                         Spacer()
                         if var question = self.question {
                             question
                             Image("question1")
+                                .padding()
                             ForEach(Array(question.choices.enumerated()), id: \.0) { (n, choice) in
                                 Button(action: { () -> Void in
                                     self.player.update(completion: .attempting(attempt))
@@ -132,6 +134,10 @@ struct Question_Of_The_Day: App {
                             
                         } else {
                             Text("No Question Today")
+                                .font(.title2)
+                                .bold()
+                                .foregroundColor(.white)
+                                .padding()
                             self.leaderboard
                         }
                         Spacer()
@@ -148,16 +154,20 @@ struct Question_Of_The_Day: App {
                         .ignoresSafeArea()
                     VStack{
                         Text("Question of the Day!")
-                            .font(.title)
+                            .font(.largeTitle)
                             .bold()
+                            .foregroundColor(.white)
                             .padding()
                         if let question = self.question {
                             question
                             Text("Correct answer is: \(question.choices[question.correct])")
+                                .foregroundColor(.white)
                             if correct {
                                 Text("Good job!")
+                                    .foregroundColor(.white)
                             } else {
                                 Text("Maybe next time!")
+                                    .foregroundColor(.white)
                             }
                         }
                         self.leaderboard

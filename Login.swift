@@ -8,7 +8,7 @@ struct Login: View {
         VStack(spacing: 30) {
             Text("Welcome to the Question of the Day!")
                 .font(.largeTitle)
-                .fontWeight(.bold)
+                .bold()
                 .foregroundColor(.white)
             TextField("Your Name", text: self.$name)
                 .onChange(of: self.name) {
